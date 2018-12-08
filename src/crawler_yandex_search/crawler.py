@@ -11,8 +11,9 @@ class GoogleSearchSpider(scrapy.Spider):
     def parse(self, response: scrapy.http.HtmlResponse):
         total = len(self.start_urls)
         index = self.start_urls.index(response.url)
-        progress = round(index/total, 5)
-        if progress*1000 == int(progress*1000):
+        progress = round(index/total * 100, 5)
+        print(index, progress)
+        if progress*10 == int(progress*100):
             self.logger.info('Progress: %s (%s)', progress, response.url)
         
         for search_item in response.css('div#links div.result.results_links.results_links_deep.web-result'):

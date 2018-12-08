@@ -12,5 +12,4 @@ class MongoRepository(BaseMongoRepository):
 
     def store_search_item(self, search_item: Dict):
         if not self._client.crawlerSearchLinks.searchItems.find_one(search_item):
-            self.logger.info('Inserted search item')
             self._client.crawlerSearchLinks.searchItems.insert_one(search_item)

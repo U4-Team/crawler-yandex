@@ -26,9 +26,9 @@ def run(search_url: str) -> None:
     logger.info('=== START ===')
     process = CrawlerProcess({
         'USER_AGENT': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
-        'DOWNLOAD_DELAY': 0.25,
+        'DOWNLOAD_DELAY': 0.2,
         'DEPTH_LIMIT': 1,
-        'CONCURRENT_REQUESTS_PER_DOMAIN': 3,
+        'CONCURRENT_REQUESTS_PER_DOMAIN': 10,
         'ITEM_PIPELINES': {
             'crawler_yandex_search.pipelines.MongoPipeline': 300
         }

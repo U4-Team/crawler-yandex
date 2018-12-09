@@ -11,5 +11,5 @@ class MongoRepository(BaseMongoRepository):
         return self._client.crawlerDataset.companies.count()
 
     def store_search_item(self, search_item: Dict):
-        if not self._client.crawlerSearchLinks.searchItems.find_one(search_item):
+        if not self._client.crawlerSearchLinks.searchItems.find_one({'URL': search_item['URL']}):
             self._client.crawlerSearchLinks.searchItems.insert_one(search_item)

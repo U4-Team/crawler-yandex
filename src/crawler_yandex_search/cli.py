@@ -31,20 +31,43 @@ def run(search_url: str) -> None:
         'CONCURRENT_REQUESTS_PER_DOMAIN': 1,
         'ITEM_PIPELINES': {
             'crawler_yandex_search.pipelines.MongoPipeline': 300
-        }
-    })
+        },
+        # 'DOWNLOADER_MIDDLEWARES': {
+        #     'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': None,
+        #     'scrapy_rotated_proxy.downloadmiddlewares.proxy.RotatedProxyMiddleware': 750,
+        # },
+        # 'ROTATED_PROXY_ENABLED': False,
+        # 'HTTP_PROXIES': [
+        #     'http://68.15.42.194:31743',
+        #     'http://91.222.167.213:38057',
+        #     'http://165.90.90.10:46006',
+        #     'http://122.50.6.186:80',
+        #     'http://96.9.79.173:59667',
+        #     'http://138.68.136.245:3128',
+        #     'http://185.44.231.70:60550',
+        #     'http://78.47.157.159:80',
+        #     'http://41.90.103.102:8888',
+        #     'http://212.72.150.51:8081',
+        #     'http://189.7.97.54:8080',
+        #     'http://94.240.46.195:23500',
+        #     'http://207.180.240.103:3128',
+        #     'http://183.182.103.98:8080',
+        #     'http://113.11.131.123:59769'
+        # ]
+     })
     repo = MongoRepository()
     start_urls = []
     for index, document in enumerate(repo.get_short_data_of_all_companies()):
-        queries = []
+        inn = document["INN"]
+        queries = [f'ИНН {inn}']
         if 'COMPANY_SHORT_NAME' in document and document['COMPANY_SHORT_NAME']:
-            queries.append(document['COMPANY_SHORT_NAME'])
-        if 'COMPANY_SHORT_NAME' in document and document['COMPANY_SHORT_NAME'] and 'INN' in document and document['INN']:
-            queries.append(document['COMPANY_SHORT_NAME']+' ИНН '+document['INN'])
+            queries.append(f'ИНН {inn} {document["COMPANY_SHORT_NAME"]}')
         for query in queries:
             qs = parse.urlencode({'q': query})
-            start_urls.append(f'https://duckduckgo.com/html/?{qs}')
-    process.crawl(GoogleSearchSpider, start_urls=sorted(start_urls))
+            start_urls.append(f'https://duckduckgo.com/html/?{qs}#{inn}')
+    
+    start_urls = list(sorted(start_urls))
+    process.crawl(GoogleSearchSpider, start_urls=start_urls[5100:])
     process.start()
     
     logger.info('done')

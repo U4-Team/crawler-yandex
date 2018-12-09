@@ -26,7 +26,7 @@ def run(search_url: str) -> None:
     logger.info('=== START ===')
     process = CrawlerProcess({
         'USER_AGENT': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
-        'DOWNLOAD_DELAY': 0.2,
+        'DOWNLOAD_DELAY': 0.1,
         'DEPTH_LIMIT': 1,
         'CONCURRENT_REQUESTS_PER_DOMAIN': 1,
         'ITEM_PIPELINES': {
@@ -44,7 +44,7 @@ def run(search_url: str) -> None:
         for query in queries:
             qs = parse.urlencode({'q': query})
             start_urls.append(f'https://duckduckgo.com/html/?{qs}')
-    process.crawl(GoogleSearchSpider, start_urls=start_urls)
+    process.crawl(GoogleSearchSpider, start_urls=sorted(start_urls))
     process.start()
     
     logger.info('done')

@@ -12,7 +12,7 @@ class GoogleSearchSpider(scrapy.Spider):
         total = len(self.start_urls)
         index = self.start_urls.index(response.url)
         progress = round(index/total * 100, 5)
-        print(index, progress)
+        print(index, progress, response.url)
         if progress*10 == int(progress*100):
             self.logger.info('Progress: %s (%s)', progress, response.url)
         

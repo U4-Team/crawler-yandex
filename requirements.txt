@@ -10,3 +10,11 @@ xlrd==1.1.0
 phonenumbers==8.10.2
 furl
 pymongo
+scrapy_proxies
+html2text
+bs4
+selenium
+spacy
+pymorphy2
+scikit-learn[alldeps]
+requests
